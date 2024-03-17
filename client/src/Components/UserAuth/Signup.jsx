@@ -5,19 +5,17 @@ import { Icon } from "react-icons-kit";
 import { eyeOff } from "react-icons-kit/feather/eyeOff";
 import { eye } from "react-icons-kit/feather/eye";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+
 
 const Signup = () => {
   const navigate = useNavigate();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-  const handleSubmit = () => {
-    navigate("/dashboardpage");
-  };
   const [formData, SetFormData] = useState({
     email: "",
     password: "",
-    FullName:""
+    FullName: "",
   });
   const handleInput = (e) => {
     const name = e.target.name;
@@ -29,6 +27,34 @@ const Signup = () => {
     console.log(formData);
   };
   // console.log(formData)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+    
+    try {
+      const response = await axios.post(
+        'http://localhost:4000/product/v1/users/new',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      console.log(response.status);
+  
+      if (response.status === 401) {
+        window.alert('Error occurred');
+      } else if (response.status === 201) {
+        navigate('/login');
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+
   return (
     <div className="w-full flex overflow-x-hidden ">
       {/* left */}
@@ -50,7 +76,7 @@ const Signup = () => {
                 </div>
                 <form className="px-10 pb-10" action="" onSubmit={handleSubmit}>
                   <div className="flex flex-col gap-6 mt-6">
-                  <div>
+                    <div>
                       <fieldset className="border border-solid border-gray-300 px-2">
                         <legend className="text-sm font-medium">
                           Full Name
@@ -114,12 +140,11 @@ const Signup = () => {
                     </div>
                     <div className=" flex justify-between">
                       <Link
-                        to="/login"
+                        to="/login  "
                         className="text-[#a365d8] text-right block"
                       >
                         Already have an Account?
                       </Link>
-                    
                     </div>
                   </div>
                   <div className="mt-6">

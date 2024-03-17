@@ -5,18 +5,17 @@ import { Icon } from "react-icons-kit";
 import { eyeOff } from "react-icons-kit/feather/eyeOff";
 import { eye } from "react-icons-kit/feather/eye";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const Login = () => {
   const navigate = useNavigate();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const handleSubmit = () => {
-    navigate("/dashboardpage");
-  };
+
   const [formData, SetFormData] = useState({
-    email: "",
-    password: "",
+    email:"",
+    password:"",
   });
   const handleInput = (e) => {
     const name = e.target.name;
@@ -28,6 +27,38 @@ const Login = () => {
     console.log(formData);
   };
   // console.log(formData)
+
+
+  const handleSubmit=async(e)=>{
+
+    console.log("data get in stst",formData)
+    e.preventDefault();
+    try{
+      const users= await fetch(`http://localhost:4000/product/v1/users/login`,{
+            method:"POST",
+            headers:{
+                'Content-Type':"application/json",
+            },
+            body:JSON.stringify(FormData)
+          });
+          let data;
+        if(users.status==200)
+          {
+            data=users.json();
+            // dispatch({type:"USER",payload:true})
+            window.alert("login successfuly")
+            navigate('/dashboardpage')
+          }
+          else
+          {
+            console.log("error occur");
+          }
+    }
+    catch(error)
+    {
+      console.log("Login error ",error)
+    }
+  }
   return (
     <div className="w-full h-screen flex overflow-x-hidden ">
       {/* left */}
