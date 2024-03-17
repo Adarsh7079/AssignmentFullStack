@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+
 import express from "express";
 import {config} from "dotenv";
 import {connectDB} from "./data/database.js";
@@ -6,7 +6,9 @@ import cookieParser from 'cookie-parser';
 import cors from "cors"
  
 import userRouter from "./routes/user.js";
-import adminRouter from "./routes/Admin.js";
+import productRout from "./routes/product.js"
+import categoryRout from "./routes/category.js"
+
 import ErrorHandler, { errorMiddleware } from "./middlewares/error.js";
 
 
@@ -31,7 +33,9 @@ app.use(
 
 //using routes
 app.use("/product/v1/users",userRouter);
-app.use("/service/v1/admin",adminRouter);
+app.use("/product/v1/product",productRout);
+app.use("/product/v1/category",categoryRout);
+
 app.use(errorMiddleware)
 
 app.get("/",(req,res)=>{

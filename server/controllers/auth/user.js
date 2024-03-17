@@ -18,14 +18,6 @@ export const register=async(req,res,next)=>{
         }
         else
         {
-            // const hashedPassword =await bcrypt.hash(Password,10);
-            // user= await User.create({Full_Name, Mobile_Number, User_Type,  Password:hashedPassword});
-            // sendCookie(user ,res,"Register Successfully",201);
-            // return res.status(201).json({
-            //     success:true,
-            //     message:"user register",
-            // });
-
             const resp=new User({FullName, email,password});
             await resp.save();
             res.status(201).json({
@@ -48,7 +40,8 @@ export const register=async(req,res,next)=>{
 export const  login=async(req,res,next)=>{
     let token
     try{
-        const {email, password}=req.body;
+        const {email,password}=req.body;
+        // console.log("boday ",req.body.email)
         if(!email || !password)
         {
             return res.status(400).json({error:"Please fill the data "})
@@ -75,7 +68,7 @@ export const  login=async(req,res,next)=>{
             }
             else
             {
-                res.json({message:"user logimn successfully "})
+                res.json({message:"user login successfully "})
             }
           
           // sendCookie(user,res,`welcome back ${user.Full_Name}`) ;

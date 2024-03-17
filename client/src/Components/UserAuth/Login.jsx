@@ -5,17 +5,16 @@ import { Icon } from "react-icons-kit";
 import { eyeOff } from "react-icons-kit/feather/eyeOff";
 import { eye } from "react-icons-kit/feather/eye";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-
   const [formData, SetFormData] = useState({
-    email:"",
-    password:"",
+    email: "",
+    password: "",
   });
   const handleInput = (e) => {
     const name = e.target.name;
@@ -24,41 +23,43 @@ const Login = () => {
     SetFormData((e) => {
       return { ...e, [name]: value };
     });
-    console.log(formData);
+    // console.log(formData);
   };
-  // console.log(formData)
+  console.log("final data", formData);
 
-
-  const handleSubmit=async(e)=>{
-
-    console.log("data get in stst",formData)
+  const handleSubmit = async (e) => {
+    console.log("data get", formData);
     e.preventDefault();
-    try{
-      const users= await fetch(`http://localhost:4000/product/v1/users/login`,{
-            method:"POST",
-            headers:{
-                'Content-Type':"application/json",
-            },
-            body:JSON.stringify(FormData)
-          });
-          let data;
-        if(users.status==200)
-          {
-            data=users.json();
-            // dispatch({type:"USER",payload:true})
-            window.alert("login successfuly")
-            navigate('/dashboardpage')
-          }
-          else
-          {
-            console.log("error occur");
-          }
+
+    try {
+      const users = await axios.post(
+        "http://localhost:4000/product/v1/users/login",
+
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      let data;
+      console.log("user found", users);
+      if (users.status == 200) {
+        // data=users.json();
+
+        // dispatch({type:"USER",payload:true})
+        window.alert("login successfuly");
+        navigate("/dashboardpage");
+      } else {
+        window.alert("Something Went Wrong !");
+        console.log("error occur", data);
+      }
+    } catch (error) {
+      window.alert("Something Went Wrong !");
+      console.log("Login error ", error);
     }
-    catch(error)
-    {
-      console.log("Login error ",error)
-    }
-  }
+  };
   return (
     <div className="w-full h-screen flex overflow-x-hidden ">
       {/* left */}

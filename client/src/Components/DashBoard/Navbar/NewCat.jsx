@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { IoArrowBack } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
+import axios from 'axios';
 
 const Newcat = () => {
+  
+  const navigate=useNavigate();
   const [formData, SetFormData] = useState({
     CategoryName: "",
     Description: "",
@@ -19,6 +22,33 @@ const Newcat = () => {
     console.log(formData);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+    
+    try {
+      const response = await axios.post(
+        'http://localhost:4000/product/v1/category/new',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      console.log(response.status);
+  
+      if (response.status === 401) {
+        window.alert('Error occurred');
+      } else if (response.status === 201) {
+        navigate('/dashboardpage/category');
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+
   return (
     <div className="w-screen overflow-hidden">
       <div>
@@ -31,7 +61,9 @@ const Newcat = () => {
         </Link>
       </div>
       <div>
-        <form className="px-10 flex flex-col gap-10">
+        <form 
+        onSubmit={handleSubmit}
+        className="px-10 flex flex-col gap-10">
           <div className="flex flex-wrap gap-10 justify-between">
             <div className="w-full md:w-[30%]">
               <fieldset className="border border-solid border-gray-300 px-2">
@@ -77,10 +109,10 @@ const Newcat = () => {
           </div>
 
           <div className="absolute flex gap-2 justify-end bottom-10 right-10">
-            <button className="border-2 rounded-full flex items-center justify-center w-[150px] md:w-auto h-[35px]">
+            <button className="border-2 rounded-full flex items-center justify-center w-[150px]  h-[35px]">
               cancel
             </button>
-            <button className="bg-[#762a95] rounded-full flex items-center justify-center text-white w-[150px] md:w-auto h-[35px]">
+            <button className="bg-[#762a95] rounded-full flex items-center justify-center text-white w-[150px] h-[35px]">
               save
             </button>
           </div>

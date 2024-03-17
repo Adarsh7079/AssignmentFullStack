@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { IoArrowBack } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Addnew = () => {
+  const navigate = useNavigate();
   const [formData, SetFormData] = useState({
-    CategoryName: "",
-    ProductName: "",
-    PackSize: "",
-    MRP: "",
+    category: "",
+    name: "",
+    packsize: "",
+    mrp: "",
     ProductImage: "",
-    Status: "",
+    status: "",
   });
   const handleInput = (e) => {
     const name = e.target.name;
@@ -19,6 +21,33 @@ const Addnew = () => {
       return { ...prevData, [name]: value };
     });
     console.log(formData);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/product/v1/product/new",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log(response.status);
+
+      if (response.status === 401) {
+        window.alert("Error occurred");
+      } else if (response.status === 201) {
+        navigate("/dashboardpage/product");
+      }
+    } catch (error) {
+      console.log("Error:", error);
+    }
   };
 
   return (
@@ -39,8 +68,8 @@ const Addnew = () => {
               <fieldset className="border border-solid border-gray-300 px-2">
                 <legend className="text-sm font-medium">Category</legend>
                 <select
-                  name="CategoryName"
-                  value={formData.CategoryName}
+                  name="category"
+                  value={formData.category}
                   onChange={handleInput}
                   className="relative bg-white focus-visible:no-underline text-[#141212] text-[20px] w-full px-2 rounded-lg border-none"
                 >
@@ -56,9 +85,9 @@ const Addnew = () => {
                 <input
                   className="border-none w-full"
                   type="text"
-                  id="ProductName"
-                  name="ProductName"
-                  value={formData.ProductName}
+                  id="name"
+                  name="name"
+                  value={formData.name}
                   onChange={handleInput}
                 />
               </fieldset>
@@ -69,9 +98,9 @@ const Addnew = () => {
                 <input
                   className="border-none w-full"
                   type="text"
-                  id="PackSize"
-                  name="PackSize"
-                  value={formData.PackSize}
+                  id="packsize"
+                  name="packsize"
+                  value={formData.packsize}
                   onChange={handleInput}
                 />
               </fieldset>
@@ -84,9 +113,9 @@ const Addnew = () => {
                 <input
                   className="border-none w-full"
                   type="text"
-                  id="MRP"
-                  name="MRP"
-                  value={formData.MRP}
+                  id="mrp"
+                  name="mrp"
+                  value={formData.mrp}
                   onChange={handleInput}
                 />
               </fieldset>
@@ -97,6 +126,7 @@ const Addnew = () => {
                 <legend className="text-sm font-medium">Product Image</legend>
                 <input
                   type="file"
+                  accept="image/png,image/gif,image/jpg,image/jpeg"
                   className="border-none w-full"
                   id="ProductImage"
                   name="ProductImage"
@@ -107,10 +137,10 @@ const Addnew = () => {
             </div>
             <div className="w-full md:w-[30%]">
               <fieldset className="border border-solid border-gray-300 px-2">
-                <legend className="text-sm font-medium">Status</legend>
+                <legend className="text-sm font-medium">status</legend>
                 <select
-                  name="Status"
-                  value={formData.Status}
+                  name="status"
+                  value={formData.status}
                   onChange={handleInput}
                   className="relative bg-white focus-visible:no-underline text-[#141212] text-[20px] w-full px-2 rounded-lg border-none"
                 >
@@ -125,7 +155,10 @@ const Addnew = () => {
             <button className="border-2 rounded-full flex items-center justify-center w-[150px] h-[35px]">
               cancel
             </button>
-            <button className="bg-[#762a95] rounded-full w-[150px] flex items-center justify-center text-white  h-[35px]">
+            <button
+              onClick={handleSubmit}
+              className="bg-[#762a95] rounded-full w-[150px] flex items-center justify-center text-white  h-[35px]"
+            >
               save
             </button>
           </div>
