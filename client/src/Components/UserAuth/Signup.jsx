@@ -34,12 +34,14 @@ const Signup = () => {
     
     try {
       const response = await axios.post(
-        'http://localhost:4000/product/v1/users/new',
+        'http://localhost:8000/api/v1/users/new',
         formData,
         {
+          withCredentials: true,
           headers: {
             'Content-Type': 'application/json',
           },
+          
         }
       );
   

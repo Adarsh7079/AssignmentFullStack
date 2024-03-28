@@ -52,7 +52,7 @@ const Category = () => {
 
   const getalldata = () => {
     axios
-      .get(`http://localhost:4000/product/v1/category/all`, {
+      .get(`http://localhost:8000/api/v1/category/all`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -76,7 +76,7 @@ const Category = () => {
   if(isdelete==1)
   {
     const response = await fetch(
-      `http://localhost:4000/product/v1/category/delete/${id}`,
+      `http://localhost:8000/api/v1/category/delete/${id}`,
       {
         method: "DELETE",
       }

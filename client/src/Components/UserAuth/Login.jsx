@@ -33,11 +33,10 @@ const Login = () => {
 
     try {
       const users = await axios.post(
-        "http://localhost:4000/product/v1/users/login",
-
+        "http://localhost:8000/api/v1/users/login",
         formData,
         {
-          withCredentials: true,
+          withCredentials:true,
           headers: {
             "Content-Type": "application/json",
           },

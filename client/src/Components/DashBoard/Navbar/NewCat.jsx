@@ -28,7 +28,7 @@ const Newcat = () => {
     
     try {
       const response = await axios.post(
-        'http://localhost:4000/product/v1/category/new',
+        'http://localhost:8000/api/v1/category/new',
         formData,
         {
           headers: {

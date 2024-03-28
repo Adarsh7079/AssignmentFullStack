@@ -51,7 +51,7 @@ const Product = () => {
   const [userData, setData] = useState([]);
   const getalldata = () => {
     axios
-      .get(`http://localhost:4000/product/v1/product/all`, {
+      .get(`http://localhost:8000/api/v1/product/all`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -72,7 +72,7 @@ const Product = () => {
     // console.log("id i got", id);
     if (isdelete == 1) {
       const response = await fetch(
-        `http://localhost:4000/product/v1/product/delete/${id}`,
+        `http://localhost:8000/api/v1/product/delete/${id}`,
         {
           method: "DELETE",
         }

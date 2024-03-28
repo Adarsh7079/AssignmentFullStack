@@ -29,16 +29,16 @@ const Addnew = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/product/v1/product/new",
+        "http://localhost:8000/api/v1/product/add",
         formData,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
-      console.log(response.status);
+      console.log(formData);
 
       if (response.status === 401) {
         window.alert("Error occurred");
@@ -133,7 +133,7 @@ const Addnew = () => {
                   value={formData.ProductImage}
                   onChange={handleInput}
                 />
-              </fieldset>
+                              </fieldset>
             </div>
             <div className="w-full md:w-[30%]">
               <fieldset className="border border-solid border-gray-300 px-2">
