@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { IoArrowBack } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Addnew = () => {
   const navigate = useNavigate();
+  const [images, setImages] = useState([]);
   const [formData, SetFormData] = useState({
     category: "",
     name: "",
@@ -49,6 +50,33 @@ const Addnew = () => {
       console.log("Error:", error);
     }
   };
+  const handleImage = (e) =>{
+    const file = e.target.files[0];
+    console.log("file : ",file)
+    SetFormData((prevData) => ({
+      ...prevData,
+      ProductImage: file,
+    }));
+
+}
+  const [catData, setCatData] = useState([]);
+
+  const getalldata = () => {
+    axios
+      .get(`http://localhost:8000/api/v1/category/all`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setCatData(res.data.data);
+        //data(setData
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+  useEffect(() => {
+    getalldata();
+  }, []);
 
   return (
     <div className="w-screen overflow-hidden">
@@ -73,9 +101,20 @@ const Addnew = () => {
                   onChange={handleInput}
                   className="relative bg-white focus-visible:no-underline text-[#141212] text-[20px] w-full px-2 rounded-lg border-none"
                 >
-                  <option value=" "></option>
-                  <option value="Milk">Milk </option>
-                  <option value="Fruit">Fruit</option>
+                  {
+                    catData.map((val,index)=>
+                
+                    {
+                      return  <option
+                      type="text"
+                       id="category"
+                       name="category"
+                       value={val.CategoryName}
+                       onChange={handleInput}>{ val.CategoryName}</option>
+                    }
+                    )
+                 
+                  }
                 </select>
               </fieldset>
             </div>
@@ -126,14 +165,14 @@ const Addnew = () => {
                 <legend className="text-sm font-medium">Product Image</legend>
                 <input
                   type="file"
-                  accept="image/png,image/gif,image/jpg,image/jpeg"
+                  multiple={false}
                   className="border-none w-full"
                   id="ProductImage"
                   name="ProductImage"
-                  value={formData.ProductImage}
-                  onChange={handleInput}
+                  onChange={handleImage}  // No value attribute here
                 />
-                              </fieldset>
+
+                </fieldset>
             </div>
             <div className="w-full md:w-[30%]">
               <fieldset className="border border-solid border-gray-300 px-2">

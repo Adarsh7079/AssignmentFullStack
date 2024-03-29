@@ -7,11 +7,11 @@ import {ApiResponse} from "../utils/ApiResponse.js"
 
 export const addProduct= asyncHandler(async (req,res)=>{
     const {name, packsize, category, mrp, status}=req.body
-
+   
     if([name, packsize, category, mrp, status].some((fields)=>fields?.trim()=="")){
         throw new ApiError(400,"All fields are required")
     }
-
+   console.log("file link: ",req.files)
     const avatarLocalPath=req.files?.ProductImage[0]?.path;
    // const coverImageLocalPath=req.files?.uplocoverImage[0]?.path;
 
@@ -40,6 +40,7 @@ export const addProduct= asyncHandler(async (req,res)=>{
    return res.status(201).json(
     new ApiResponse(200,createdProduct,"Product addedre Successfully")
    )
+   
     console.log("email: ",email)
 
     //uplaod on cloudinary
